@@ -9,8 +9,8 @@
 *.user
 *.userosscache
 *.sln.docstates
-bfs_dfs/__pycache__
-a_star/__pycache__
+bfs_dfs/__pycache__/
+a_star/__pycache__/
 
 
 # User-specific files (MonoDevelop/Xamarin Studio)
