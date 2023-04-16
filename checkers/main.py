@@ -271,6 +271,3 @@ if __name__ == '__main__':
     first= int(input('Quién juega primero? 0=IA o 1=Player: '))%2
     depth= int(input('Profundidad del árbol de Minimax    : '))
     game = Game(first,depth)
-
-#===========ERRORES==================
-#1. No se está generando los estados posibles de la IA
