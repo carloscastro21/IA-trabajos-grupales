@@ -1,8 +1,6 @@
 import pygame as pg
-import numpy as np
 from pygame.locals import *
 import sys
-from tkn_fnc import *
 
 pg.init()
 
