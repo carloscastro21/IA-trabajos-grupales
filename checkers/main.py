@@ -72,13 +72,14 @@ class Game:
                     if self.selected_bool:
                         if self.move_piece(self.selected_piece[0], self.selected_piece[1], row, col):
                             self.turn= 0
+                            self.board.actualization()
                     else:
                         self.select_piece(row, col)
                 if not self.turn: #Turno de la IA
                     self.board.board= self.IA_player.play(self.board)
                     self.turn= 1
+                    self.board.actualization()
                 self.valid_game()
-                self.board.actualization()
             self.screen.fill(WHITE) # fondo blanco
             self.draw()
             pygame.display.update()
@@ -93,6 +94,7 @@ class Game:
             screen_color= DARK_GREEN
             result= WIN_STR
         if self.game_over or self.winner:
+            pygame.time.delay(1500)
             self.screen.fill(screen_color)
             self.screen.blit(result, (WIDTH//2 - LOST_STR.get_width()//2, HEIGHT//2 - LOST_STR.get_height()//2))
             pygame.display.update()
@@ -139,7 +141,7 @@ class Game:
             pygame.draw.rect(self.screen, RED, (self.selected_piece[1] * SQUARE_SIZE, self.selected_piece[0] * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE), 5)
             
 class Board: # Clase que representa el tablero
-    def __init__(self, board: list= TEST_BOARD):
+    def __init__(self, board: list= INIT_BOARD):
         self.board: list = board
         self.n_reds= sum(row.count(elem) for row in self.board for elem in ['r', 'R'])
         self.n_blacks= sum(row.count(elem) for row in self.board for elem in ['b', 'B']) 
@@ -271,6 +273,6 @@ class IA:
         return best_state.board
 
 if __name__ == '__main__':
-    first= int(input('Quién juega primero? 0=IA o 1=Player  : '))%2
-    depth= 1 + int(input('Profundidad del árbol de Minimax(1-9): '))%10
+    first= int(input('Quién juega primero? 0=IA o 1=Player : '))%2
+    depth= 1 + int(input('Profundidad del árbol de Minimax(1-4): '))%5
     game = Game(first,depth)
