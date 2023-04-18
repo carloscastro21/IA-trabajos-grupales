@@ -39,9 +39,9 @@ TEST_BOARD = [
             ['0', '0', '0', '0', '0', 'r', '0', '0'],
             ['0', '0', '0', '0', '0', '0', '0', '0'],
             ['0', '0', '0', '0', '0', 'R', '0', '0'],
-            ['b', '0', 'b', '0', 'b', '0', 'B', '0'],
-            ['0', 'b', '0', 'b', '0', '0', '0', 'b'],
-            ['b', '0', 'b', '0', '0', '0', 'b', '0'],]
+            ['0', '0', 'b', '0', 'b', '0', 'B', '0'],
+            ['0', '0', '0', '0', '0', '0', '0', '0'],
+            ['0', '0', '0', '0', '0', '0', '0', '0'],]
 COLOR= {'r':RED, 'b':BLACK, 'R':RED, 'B':BLACK, '0':WHITE}
 TURN= {0:'r', 1:'b'}
 class Game:
@@ -72,13 +72,13 @@ class Game:
                     if self.selected_bool:
                         if self.move_piece(self.selected_piece[0], self.selected_piece[1], row, col):
                             self.turn= 0
-                            self.valid_game()
                     else:
                         self.select_piece(row, col)
                 if not self.turn: #Turno de la IA
                     self.board.board= self.IA_player.play(self.board)
                     self.turn= 1
-                    self.valid_game()
+                self.valid_game()
+                self.board.actualization()
             self.screen.fill(WHITE) # fondo blanco
             self.draw()
             pygame.display.update()
@@ -139,7 +139,7 @@ class Game:
             pygame.draw.rect(self.screen, RED, (self.selected_piece[1] * SQUARE_SIZE, self.selected_piece[0] * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE), 5)
             
 class Board: # Clase que representa el tablero
-    def __init__(self, board: list= INIT_BOARD):
+    def __init__(self, board: list= TEST_BOARD):
         self.board: list = board
         self.n_reds= sum(row.count(elem) for row in self.board for elem in ['r', 'R'])
         self.n_blacks= sum(row.count(elem) for row in self.board for elem in ['b', 'B']) 
@@ -170,9 +170,12 @@ class Board: # Clase que representa el tablero
             self.board[row2][col2]= 'B'
         if row2 == 7 and piece == 'r':
             self.board[row2][col2]= 'R'
+        self.actualization()
+
+    def actualization(self):
         #Actualizar el peso del tablero
         self.n_reds= sum(row.count(elem) for row in self.board for elem in ['r', 'R'])
-        self.n_blacks= sum(row.count(elem) for row in self.board for elem in ['b', 'B']) 
+        self.n_blacks= sum(row.count(elem) for row in self.board for elem in ['b', 'B'])
         self.weight= self.n_reds - self.n_blacks #Peso del tablero/ estado del juego
 
     def get_piece(self, row, col):
@@ -268,6 +271,6 @@ class IA:
         return best_state.board
 
 if __name__ == '__main__':
-    first= int(input('Quién juega primero? 0=IA o 1=Player: '))%2
-    depth= int(input('Profundidad del árbol de Minimax    : '))
+    first= int(input('Quién juega primero? 0=IA o 1=Player  : '))%2
+    depth= 1 + int(input('Profundidad del árbol de Minimax(1-9): '))%10
     game = Game(first,depth)
