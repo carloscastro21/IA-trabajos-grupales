@@ -268,8 +268,37 @@ class IA:
                     best_move= move
             return best_move
         
+    def minimax_alpha_beta(self, board: Board, minimizePlayer: bool, depth= 3, alpha= -inf, beta= inf): #minimizePlayer: True si es el turno de la IA
+        now_turn= int(not minimizePlayer)
+        if depth == 0 or board.get_winner() != '0' or board.next_posibles_states(TURN[now_turn]) == []:
+            return board
+        best_move: Board= None
+        if minimizePlayer: #Es el turno de la IA
+            best_value= -inf
+            for move in board.next_posibles_states(TURN[now_turn]):
+                value= self.minimax_alpha_beta(move, False, depth - 1, alpha, beta).weight
+                if value > best_value:
+                    best_value= value
+                    best_move= move
+                alpha= max(alpha, best_value)
+                if beta <= alpha:
+                    break
+            return best_move
+        else: #Es el turno del jugador
+            best_value= inf
+            for move in board.next_posibles_states(TURN[now_turn]):
+                value= self.minimax_alpha_beta(move, True, depth - 1, alpha, beta).weight
+                if value < best_value:
+                    best_value= value
+                    best_move= move
+                beta= min(beta, best_value)
+                if beta <= alpha:
+                    break
+            return best_move
+        
+
     def play(self, board):
-        best_state= self.minimax(board, True, self.depth)
+        best_state= self.minimax_alpha_beta(board, True, self.depth)
         return best_state.board
 
 if __name__ == '__main__':
