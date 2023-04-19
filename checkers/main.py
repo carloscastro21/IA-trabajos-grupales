@@ -39,7 +39,7 @@ TEST_BOARD = [
             ['0', '0', '0', '0', '0', 'r', '0', '0'],
             ['0', '0', '0', '0', '0', '0', '0', '0'],
             ['0', '0', '0', '0', '0', 'R', '0', '0'],
-            ['0', '0', 'b', '0', 'b', '0', 'B', '0'],
+            ['0', '0', '0', '0', 'b', '0', 'B', '0'],
             ['0', '0', '0', '0', '0', '0', '0', '0'],
             ['0', '0', '0', '0', '0', '0', '0', '0'],]
 COLOR= {'r':RED, 'b':BLACK, 'R':RED, 'B':BLACK, '0':WHITE}
@@ -73,6 +73,7 @@ class Game:
                         if self.move_piece(self.selected_piece[0], self.selected_piece[1], row, col):
                             self.turn= 0
                             self.board.actualization()
+                            pygame.time.delay(500)
                     else:
                         self.select_piece(row, col)
                 if not self.turn: #Turno de la IA
@@ -298,7 +299,7 @@ class IA:
         
 
     def play(self, board):
-        best_state= self.minimax_alpha_beta(board, True, self.depth)
+        best_state= self.minimax(board, True, self.depth)
         return best_state.board
 
 if __name__ == '__main__':
