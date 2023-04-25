@@ -102,7 +102,6 @@ class Draw:
         self.screen.fill((0, 0, 0))
         self.genetic_alg.next_generation()
         save_statistic(self.genetic_alg.statistic())
-        print(self.genetic_alg.best_individual.fitness)
         # Imprimir el numero de generacion
         text = font.render(str(self.genetic_alg.generation), True, (255, 255, 255))
         textRect = text.get_rect()
