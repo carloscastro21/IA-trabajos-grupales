@@ -11,8 +11,8 @@ class City:
 class Individual:
     def __init__(self, chromosome, cities):
         self.chromosome = chromosome
-        self.fitness = self.calc_fitness()
         self.cities = cities
+        self.fitness = self.calc_fitness()
 
     def calc_fitness(self):
         fitness = 0
@@ -41,10 +41,20 @@ class GeneticAlg:
             chromosome.append(chromosome[0])
             population.append(Individual(chromosome, self.cities))
         return population
+    def simule_generation(self):
+        self.population.sort(key=lambda x: x.fitness)
+        self.best_individual = self.population[0]
+        new_population = []
+        for i in range(self.n_population//2):
+            new_population.append(self.population[i])
+        for i in range(self.n_population//2):
+            new_population.append(self.crossover())
+        self.population = new_population
+        
     
 
 if __name__ == "__main__":
-    genetic_alg = GeneticAlg(100, 10, 10)
+    genetic_alg = GeneticAlg(100, 50, 50)
     print(genetic_alg.cities)
     for i in genetic_alg.population:
         print(i.chromosome)
