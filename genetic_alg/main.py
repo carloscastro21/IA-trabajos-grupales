@@ -7,6 +7,8 @@ pygame.init()
 open("statistic.csv", "w").close()
 font = pygame.font.Font('freesansbold.ttf', 32)
 
+WAIT_MS = 50
+
 class City:
     def __init__(self, x, y):
         self.x = x
@@ -38,7 +40,7 @@ class GeneticAlg:
     def generate_cities(self):
         cities = []
         for i in range(self.n_cities):
-            cities.append(City(randint(0, 100), randint(0, 100)))
+            cities.append(City(randint(2, 98), randint(2, 98)))
         return cities
     def generate_population(self):
         population = []
@@ -119,7 +121,7 @@ class Draw:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     break
-            pygame.time.wait(100)
+            pygame.time.wait(WAIT_MS)
         pygame.quit()
 
 #Save the statistic of average of fitness for each generation and the fitness of the best individual in a file
