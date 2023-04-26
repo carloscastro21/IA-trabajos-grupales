@@ -1,12 +1,16 @@
 from random import randint, shuffle
 import pygame
 import matplotlib.pyplot as plt
+import sys
 
 pygame.init()
 #Clear statistic file
 open("statistic.csv", "w").close()
 font = pygame.font.Font('freesansbold.ttf', 32)
 
+GENERATIONS = 100
+POPULATION = 200
+CITIES = 20
 WAIT_MS = 50
 
 class City:
@@ -61,7 +65,7 @@ class GeneticAlg:
         for i in range(forty_percent):
             new_population.append(self.population[i])
         for i in range(fifty_percent):
-            new_population.append(self.crossover())
+            new_population.append(self.crossover2())
         for i in range(ten_percent):
             new_population.append(self.mutation())
         self.population = new_population
@@ -72,6 +76,24 @@ class GeneticAlg:
         child = []
         rand_index = randint(0, self.n_cities-1)
         for i in range(rand_index):
+            child.append(parent1.chromosome[i])
+        for i in range(self.n_cities):
+            if parent2.chromosome[i] not in child:
+                child.append(parent2.chromosome[i])
+        child.append(child[0])
+        return Individual(child, self.cities)
+    
+    def crossover2(self): #Crossover with random index The best
+        parent1 = self.population[randint(0, self.n_population//2)]
+        parent2 = self.population[randint(0, self.n_population//2)]
+        child = []
+        rand_index1 = randint(0, self.n_cities-1)
+        rand_index2 = randint(0, self.n_cities-1)
+        while rand_index1 == rand_index2:
+            rand_index2 = randint(0, self.n_cities-1)
+        if rand_index1 > rand_index2:
+            rand_index1, rand_index2 = rand_index2, rand_index1
+        for i in range(rand_index1, rand_index2):
             child.append(parent1.chromosome[i])
         for i in range(self.n_cities):
             if parent2.chromosome[i] not in child:
@@ -120,7 +142,7 @@ class Draw:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
-                    break
+                    sys.exit()
             pygame.time.wait(WAIT_MS)
         pygame.quit()
 
@@ -156,8 +178,7 @@ class DrawStatistic:
         plt.show()
 
 if __name__ == "__main__":
-    generations = 100
-    genetic_alg = GeneticAlg(n_cities=20, n_population=300)
+    genetic_alg = GeneticAlg(n_cities=CITIES, n_population=POPULATION)
     draw= Draw(genetic_alg)
-    draw.run(generations)
+    draw.run(GENERATIONS)
     statistic= DrawStatistic()
