@@ -3,9 +3,11 @@ import pygame
 import matplotlib.pyplot as plt
 import sys
 
+FILE_DIR= "\statistic.csv"
+
 pygame.init()
 #Clear statistic file
-open("statistic.csv", "w").close()
+open(FILE_DIR, "w").close()
 font = pygame.font.Font('freesansbold.ttf', 32)
 
 GENERATIONS = 100
@@ -149,7 +151,7 @@ class Draw:
 #Save the statistic of average of fitness for each generation and the fitness of the best individual in a file
 #Don't substitute the file, add the new statistic to the file
 def save_statistic(string):
-    file= open("statistic.csv", "a")
+    file= open(FILE_DIR, "a")
     file.write(string)
     file.close()
 class DrawStatistic:
@@ -161,7 +163,7 @@ class DrawStatistic:
         self.generation= []
         self.average= []
         self.best= []
-        file= open("statistic.csv", "r")
+        file= open(FILE_DIR, "r")
         for line in file:
             line= line.split(",")
             self.generation.append(int(line[0]))
